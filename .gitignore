@@ -1,0 +1,41 @@
+# Obsidian vault — external, synced, never committed
+household/obsidian/
+.obsidian/
+.stfolder/
+KitchenOwl/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+
+# Logs / backups / transient pantry state
+*.log
+pantry_mutations.log
+*.bak
+*.bak.*
+*.bak3a
+household/pantry/snapshots/
+household/pantry/.stage4e-artifact/
+household/pantry/.stage4-verification/
+
+# Grocery-list generation previews / dated archives / test fixtures
+household/grocery-lists/.stage3c-preview/
+household/grocery-lists/.stage4d-preview/
+household/grocery-lists/.stage4g-preview/
+household/grocery-lists/test.yaml
+household/grocery-lists/archive/
+household/archive/grocery-lists/
+
+# One-time recommendation audit/repair artifacts (decision C)
+household/recommendations/ingredient-format-*
+household/recommendations/recipe-category-audit*
+
+# OS
+.DS_Store
+
+# Hermes hub cache (not repo content)
+.hermes/skills/.hub/
