@@ -1,10 +1,75 @@
+# ============================================================
+# Annada / household-automation framework — .gitignore
+# ============================================================
+# This repository contains the reusable FRAMEWORK (skills, scripts,
+# schemas, docs, tests, generic fixtures). It intentionally EXCLUDES
+# a household's private INSTANCE DATA. A household clones this template
+# and populates its own instance outside Git.
+#
+# Rules below exclude instance data while keeping framework source code
+# (Python, SKILL.md, workflows, README, schemas, fixtures) tracked.
+
+# ------------------------------------------------------------
+# Instance data — household-specific, never committed
+# ------------------------------------------------------------
+
+# Store configuration (specific stores/locations)
+household/grocery-data/stores.yaml
+
+# Pantry inventory (live household contents)
+household/pantry/inventory.yaml
+
+# Recipe index (generated from recipe library)
+household/recipes/index.yaml
+
+# Personal recipe files — but keep the directory README, .gitkeep, and any
+# deliberately-supplied generic example recipe named exactly example-recipe.md.
+household/recipes/*
+!household/recipes/README.md
+!household/recipes/.gitkeep
+!household/recipes/example-recipe.md
+
+# Instance meal plans — keep README and .gitkeep
+household/plans/*
+!household/plans/README.md
+!household/plans/.gitkeep
+
+# Instance grocery lists — keep README and .gitkeep
+household/grocery-lists/*
+!household/grocery-lists/README.md
+!household/grocery-lists/.gitkeep
+
+# Instance approval records — keep README and .gitkeep
+household/approvals/*
+!household/approvals/README.md
+!household/approvals/.gitkeep
+
+# Instance recommendation records — keep README and .gitkeep
+household/recommendations/*
+!household/recommendations/README.md
+!household/recommendations/.gitkeep
+
+# Archived instance records — keep .gitkeep
+household/archive/*
+!household/archive/.gitkeep
+
+# Imported instance material (raw/external) — keep the generic test
+# fixture and .gitkeep
+household/recipe-imports/*
+!household/recipe-imports/test-source.md
+!household/recipe-imports/.gitkeep
+
+# ------------------------------------------------------------
 # Obsidian vault — external, synced, never committed
+# ------------------------------------------------------------
 household/obsidian/
 .obsidian/
 .stfolder/
 KitchenOwl/
 
+# ------------------------------------------------------------
 # Python caches
+# ------------------------------------------------------------
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -12,7 +77,9 @@ __pycache__/
 venv/
 *.egg-info/
 
+# ------------------------------------------------------------
 # Logs / backups / transient pantry state
+# ------------------------------------------------------------
 *.log
 pantry_mutations.log
 *.bak
@@ -22,7 +89,9 @@ household/pantry/snapshots/
 household/pantry/.stage4e-artifact/
 household/pantry/.stage4-verification/
 
+# ------------------------------------------------------------
 # Grocery-list generation previews / dated archives / test fixtures
+# ------------------------------------------------------------
 household/grocery-lists/.stage3c-preview/
 household/grocery-lists/.stage4d-preview/
 household/grocery-lists/.stage4g-preview/
@@ -30,12 +99,18 @@ household/grocery-lists/test.yaml
 household/grocery-lists/archive/
 household/archive/grocery-lists/
 
-# One-time recommendation audit/repair artifacts (decision C)
+# ------------------------------------------------------------
+# One-time recommendation audit/repair artifacts
+# ------------------------------------------------------------
 household/recommendations/ingredient-format-*
 household/recommendations/recipe-category-audit*
 
+# ------------------------------------------------------------
 # OS
+# ------------------------------------------------------------
 .DS_Store
 
+# ------------------------------------------------------------
 # Hermes hub cache (not repo content)
+# ------------------------------------------------------------
 .hermes/skills/.hub/

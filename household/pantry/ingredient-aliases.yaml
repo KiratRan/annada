@@ -1,0 +1,57 @@
+# Canonical Ingredient Aliases
+#
+# This file is the explicit, auditable source of ingredient-identity aliases
+# for the household pantry. It is owned by the pantry-inventory-manager skill
+# together with ingredient_identity.py.
+#
+# Purpose
+# -------
+# Maps recipe-facing names to a single canonical identity. Aliases exist ONLY
+# for equivalences that are genuinely reliable and that the household has
+# seen in its own recipe library / grocery artifacts.
+#
+# Rules
+# -----
+# - Do NOT add a large speculative dictionary. Add aliases only when
+#   demonstrated by the recipe library / grocery artifacts and confirmed
+#   equivalent.
+# - Do NOT add "related but different" pairs (onion vs yellow onion, red vs
+#   Kashmiri chilli powder, fresh vs ground ginger, chicken breast vs thigh,
+#   milk vs cream, potato vs sweet potato). Those are NOT aliases.
+# - Adding or modifying an alias entry requires the same approval process as
+#   `modify_pantry_inventory` (see ASSISTANT.md / config.yaml).
+# - The matcher never uses an LLM, fuzzy matching, or similarity scoring as
+#   an implicit alias source. All equivalences live here, in plain text.
+#
+# Schema
+# ------
+# version: int
+# entries:
+#   - name: <canonical identity>   (aligns to a pantry item identity)
+#     aliases: [<recipe-facing name>, ...]
+#     note: <why this is a reliable equivalence>
+#
+# Canonical names and aliases are compared after deterministic
+# normalization (case, whitespace, punctuation, chili/chilli, safe
+# singular/plural), so entries may be written in natural spelling.
+# List the natural form only; singular/plural variants are handled by
+# the normalizer and do NOT need separate entries.
+
+version: 1
+
+entries:
+  - name: scallions
+    aliases:
+      - green onions
+    note: Scallions and green onions are the same vegetable; both spellings
+      appear in the household recipe library.
+  - name: cilantro
+    aliases:
+      - coriander leaves
+    note: Cilantro and coriander leaves are the same herb; both appear in
+      the household recipe library.
+  - name: tuvar dal
+    aliases:
+      - toor dal
+    note: tuvar and toor are common transliterations of the same lentil,
+      used interchangeably in the household recipe library.

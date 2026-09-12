@@ -1,0 +1,160 @@
+# Trusted recipe sources
+# Used by recipe-recommendation-agent and recipe-library-manager
+version: 1
+
+sources:
+  - id: serious-eats
+    name: Serious Eats
+    url: https://www.seriouseats.com
+    type: recipe_website
+    trust: 
+      level: high
+      reasons:
+        - Strong testing methodology
+        - Technique-focused recipes
+    enabled: true
+    usage:
+      recommend: true
+      import: true
+    notes:
+      - Strong testing methodology
+      - Good for technique-focused recipes
+
+  - id: budget-bytes
+    name: Budget Bytes
+    url: https://www.budgetbytes.com
+    type: recipe_website
+    trust: 
+      level: high
+      reasons:
+        - Strong trackhistory
+        - Simple explanations
+    enabled: true
+    usage:
+      recommend: true
+      import: false
+    notes:
+      - Budget-focused recipes
+      - Useful for grocery optimization
+
+  - id: food-wishes
+    name: Food Wishes
+    url: https://foodwishes.blogspot.com
+    type: recipe_creator
+    trust: 
+      level: high
+      reasons:
+        - Technique-focused
+        - Encourages customization
+        - History as culinary instructor
+    enabled: true
+    usage:
+      recommend: true
+      import: true
+    notes:
+      - Individual creator recipes
+      - Preserve creator attribution
+
+  - id: ranveer-brar
+    name: Ranveer Brar
+    url: https://ranveerbrar.com/
+    type: recipe_creator
+    trust:
+      level: high
+      reasons:
+        - Knowledgable about Indian food history
+        - Proven track record
+    enabled: true
+    note:
+      - Indian, Asian
+
+  - id: hot-thai-kitchen
+    name: Hot Thai Kitchen
+    url: https://hot-thai-kitchen.com
+    type: recipe_creator
+    trust:
+      level: high
+      reasons:
+        - Knowledgable about Thai food history
+        - Proven track record
+    enabled: true
+    note:
+      - Thai
+
+  - id: chinese-cooking-demystified
+    name: Chinese Cooking Demystified
+    url: https://chinesecookingdemystified.substack.com/
+    type: recipe_creator
+    trust:
+      level: high
+      reasons:
+        - Knowledgable about Chinese food history
+        - Proven track record
+    enabled: true
+    note:
+      - Chinese
+  
+  - id: maangchi
+    name: Maangchi
+    url: https://maangchi.com
+    type: recipe_creator
+    trust:
+      level: high
+      reasons:
+        - Knowledgable about Korean food history
+        - Proven track record
+    enabled: true
+    note:
+      - Korean
+      
+  - id: rick-bayless
+    name: Rick Bayless
+    url: https://rickbayless.com/
+    type: recipe_creator
+    trust:
+      level: high
+      reasons:
+        - Knowledgable about Mexican food history
+        - Proven track record
+    enabled: true
+    note:
+      - Mexican
+
+  - id: vincenzo
+    name: Vincenzo
+    url: https://vincenzosplate.com/
+    type: recipe_creator
+    trust:
+      level: high
+      reasons:
+        - Knowledgable about Italian food history
+        - Proven track record
+    enabled: true
+    note:
+      - Italain
+
+  - id: french-cooking-academy
+    name: French Cooking Academy
+    url: https://thefrenchcookingacademy.com/
+    type: recipe_website
+    trust:
+      level: high
+      reasons:
+        - Knowledgable about French food history
+        - Proven track record
+    enabled: true
+    note:
+      - French
+
+  - id: japanese-cooking-101
+    name: Japanese Cooking 101
+    url: https://japanesecooking101.com/
+    type: recipe_creator
+    trust:
+      level: high
+      reasons:
+        - Knowledgable about Japanese food history
+        - Proven track record
+    enabled: true
+    note:
+      - Japanese, Asian

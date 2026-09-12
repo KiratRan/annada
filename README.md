@@ -1,12 +1,12 @@
-# household-automation
+# Annada
 
 ## Purpose
 
-`household-automation` consolidates the automation that runs a two-person household: meal planning, pantry and ingredient tracking, grocery data and list generation, recipe acquisition and normalization, recommendation generation, and the standing approval workflow that gates changes to canonical data.
+Annada is the reusable household-automation **framework** and its source-control repository. It consolidates the automation that runs a household: meal planning, pantry and ingredient tracking, grocery data and list generation, recipe acquisition and normalization, recommendation generation, recipe publishing, and the standing approval workflow that gates changes to canonical data.
 
 The repository is split into two top-level trees:
 
-- `household/` — the canonical data and code that define the household system.
+- `household/` — the framework's canonical data model, schemas, documentation, and code.
 - `skills/` — the ten Hermes skills that drive the workflows over that data.
 
 ## Repository Layout
@@ -14,7 +14,7 @@ The repository is split into two top-level trees:
 ```
 household/
   ASSISTANT.md          household operator instructions
-  config.yaml           shared runtime configuration
+  config.yaml           shared runtime configuration (generic template)
   recipe-sources.yaml   configured recipe source list
   approvals/            standing decision records gating canonical changes
   archive/              historical / superseded artifacts
@@ -40,24 +40,55 @@ skills/
   obsidian-integration/
 ```
 
-## Canonical Data Model
+## Framework vs. Private Household Instance
 
-The following directories are the canonical source of truth for the household system:
+Annada is a durable source-control boundary, not a disposable snapshot.
 
-- `household/plans/` — weekly meal plans
-- `household/grocery-lists/` — weekly grocery lists
-- `household/approvals/` — approval records that gate changes to canonical data
-- `household/recommendations/` — generated meal recommendations
-- `household/pantry/inventory.yaml` — pantry inventory
-- `household/recipes/` — the canonical recipe library (see below)
+**Framework / version-controlled (in this repository):**
 
-Changes to canonical data are gated by the approval workflow and must not be made directly.
+- skills
+- scripts
+- workflow logic
+- schemas
+- documentation
+- tests
+- generic fixtures
+- framework configuration
+
+**Private household instance data / NOT version-controlled (exists only in the household's own instance, e.g. `/home/kirat/household`):**
+
+- recipes
+- recipe index
+- stores
+- pantry inventory
+- meal plans
+- grocery lists
+- approvals
+- recommendations
+- archived runtime data
+- Obsidian
+- generated/runtime artifacts
+
+A household instance is exactly that — an *instance* of the Annada framework. A different household clones this repository and populates its own private data outside Git.
+
+`.gitignore` excludes the instance-data paths above while continuing to track all framework source code (Python scripts, tests, `SKILL.md` files, workflow definitions, READMEs, schemas, and generic fixtures).
+
+## Framework Development Flow
+
+The framework is expected to evolve continuously through this repository. The intended flow:
+
+1. Develop changes (skills, scripts, workflows, schemas, docs, tests).
+2. Test them here.
+3. Commit and push framework changes.
+4. Deliberately deploy / update a private household instance separately.
+
+No automatic sync, install, or deployment machinery is built yet; the repository is establishing the source-control boundary first, and instance updates remain deliberate and manual for now.
 
 ## recipe-imports/ — Ingestion Boundary
 
 `household/recipe-imports/` is the non-canonical staging/inbox boundary for raw or externally sourced recipe material; `household/recipes/` is the canonical normalized recipe library.
 
-`recipe-imports/` is deliberately NOT canonical. New recipes land here as raw/unprocessed material and are expected to pass through the recipe-library-manager / recipe-web-scraping ingestion pipeline, which normalizes and promotes them into `recipes/`. Arbitrary transient import artifacts are not tracked; the committed contents are the directory skeleton (`.gitkeep`) and deliberate test fixtures (e.g. `test-source.md`).
+`recipe-imports/` is deliberately NOT canonical. New recipes land here as raw/unprocessed material and are expected to pass through the recipe-library-manager / recipe-web-scraping ingestion pipeline, which normalizes and promotes them into `recipes/`. Personal import artifacts are not tracked; the committed contents are the directory skeleton (`.gitkeep`) and the deliberate generic test fixture `test-source.md`.
 
 ## Obsidian
 
@@ -65,7 +96,7 @@ Obsidian is an external presentation/reference layer over the household data. Th
 
 ## Environment Variables
 
-- `HOUSEHOLD_ROOT` — **required.** Absolute path to the repository root (`~/household-automation`). All skills, scripts, and docs resolve household paths relative to this.
+- `HOUSEHOLD_ROOT` — **required.** Absolute path to a household instance root (e.g. `~/household-automation` for this repository, or a household's own instance root). All skills, scripts, and docs resolve household paths relative to this.
 - `OBSIDIAN_VAULT` — required **only** for Obsidian operations. Path to the external Obsidian vault.
 - `CRAWL4AI_VENV` — required **only** where recipe-web-scraping needs its virtualenv.
 - `CRAWL4AI_PROJECT` — required **only** where recipe-web-scraping needs its project/working directory.
@@ -91,13 +122,14 @@ Ten Hermes skills are included as normal directories under `skills/` (flat, not 
 
 Run from the repository root with `HOUSEHOLD_ROOT` set:
 
-- Pantry tests (`household/pantry/`) — 221 passed
-- Grocery identity tests (`skills/grocery-list-generator/tests/`) — 25 passed
-- Obsidian publisher tests (`household/scripts/test_obsidian/`) — 31 passed, sandbox vault only
+- Pantry ingredient-identity tests (`household/pantry/test_ingredient_identity.py`) — **167 passed** (no private data required).
+- Pantry operation tests (`household/pantry/test_pantry_ops.py`) — some guards read the real `inventory.yaml`; in a clean checkout where no private inventory exists they error on the missing file (this is expected, since inventory is instance data). The identity/code unit tests pass independently.
+- Grocery identity tests (`skills/grocery-list-generator/tests/`) — **25 passed**.
+- Obsidian publisher tests (`household/scripts/test_obsidian/`) — build a sandbox but expect a private recipe library as fixtures, so the full suite requires the household's real recipes; the vault-independent parts pass without the personal vault.
 
 ## Portability
 
-This repository is portable. No machine-specific paths are required at runtime; all household paths derive from `$HOUSEHOLD_ROOT`. Any `/home/kirat` or host-specific reference that remains in included content is intentional historical/provenance data (canonical meal plans, grocery lists, approvals, recommendations, and archive records), not runtime configuration.
+This repository is portable. No machine-specific paths or credentials are required at runtime; all household paths derive from `$HOUSEHOLD_ROOT`. The framework content is store- and instance-agnostic — a household configures its own stores, aliases, people, and preferences in its instance.
 
 ## Upstream
 

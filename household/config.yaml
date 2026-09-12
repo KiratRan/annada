@@ -1,0 +1,134 @@
+# Household configuration
+# Used by meal planning, grocery list generation, pantry management,
+# and grocery promotion workflows.
+#
+# This file is the TEMPLATE configuration. A new household should fill in
+# its own values here (people count, cuisines, stores, cooking preferences)
+# by copying the placeholders below. Machine-specific absolute paths are
+# intentionally avoided — everything resolves against $HOUSEHOLD_ROOT at
+# runtime.
+
+household:
+  name: Household
+
+  # Number of people meals should generally serve
+  # Replace with this household's headcount.
+  people: null
+
+  # Default meal planning scope
+  meals:
+    default_meal: dinner
+    dinners_per_week: 7
+    lunches_per_week: 0
+    breakfasts_per_week: 0
+
+preferences:
+  # Preferred cuisines for meal suggestions
+  # Populate with this household's cuisines (e.g. italian, mexican, thai).
+  cuisines: []
+
+  # Cuisines or ingredients to avoid
+  avoid: []
+
+  # Dietary restrictions or allergies
+  allergies: []
+
+  # Ingredients or dishes that are disliked
+  dislikes: []
+
+planning:
+  # Whether leftovers should be intentionally planned
+  leftovers:
+    enabled: true
+    preferred_days: 1
+
+  # Balance goals
+  goals:
+    use_existing_recipes_first: true
+    prioritize_pantry_items: true
+    prioritize_sale_items: true
+    minimize_food_waste: true
+
+  # Cooking preferences
+  cooking:
+    # Target maximum time for a weeknight meal, in minutes.
+    # Replace with this household's preferred limit.
+    max_weeknight_minutes: null
+    preferred_difficulty:
+      - easy
+      - moderate
+
+budget:
+  enabled: true
+
+  # General shopping priorities
+  priorities:
+    - use_weekly_sales
+    - compare_store_prices
+    - avoid_unnecessary_purchases
+
+  # Optional monthly target
+  monthly_target:
+    amount: unknown
+    currency: USD
+
+stores:
+  # References stores.yaml
+  use_configured_stores_only: true
+
+  # This household's preferred store names.
+  # They must be present in household/grocery-data/stores.yaml (which is
+  # instance data and intentionally excluded from the repository).
+  preferred_stores: []
+
+pantry:
+  # How aggressively to use tracked inventory
+  use_inventory: true
+
+  # Warn when ingredients are nearing expiration
+  expiration_tracking: true
+
+recipes:
+  # Recipes directory, relative to HOUSEHOLD_ROOT (e.g. <root>/recipes).
+  # No machine-specific absolute paths; resolve against HOUSEHOLD_ROOT at
+  # runtime via HOUSEHOLD_ROOT + <this value>.
+  library_path: recipes
+
+  # Recipe selection rules
+  selection:
+    prefer_existing: true
+    discovery:
+      allow_suggestions: true
+      allow_import_after_approval: true
+      allow_direct_creation: false
+    require_source: true
+
+output:
+  # These are relative to HOUSEHOLD_ROOT: <root>/plans, <root>/grocery-lists.
+  plans_directory: plans
+  grocery_lists_directory: grocery-lists
+
+  # Include reasoning in generated plans
+  include_notes:
+    - selected_recipe_reason
+    - sale_influence
+    - pantry_usage
+    - leftovers
+
+obsidian:
+  # External Obsidian vault is NOT part of this repository. Its location is an
+  # environment override (OBSIDIAN_VAULT) resolved at runtime, so it is null
+  # here — never commit a machine-specific vault path.
+  vault_path: null
+
+automation:
+  approvals:
+    enabled: true
+
+    require_confirmation:
+      - modify_pantry_inventory
+
+    automatic:
+      - recipe_ranking
+      - meal_plan_generation
+      - grocery_list_generation
